@@ -4,8 +4,8 @@
 # See usage example below
 #
 # Vars
-token="87fa0736f13bfc677711c446cabe81132477f0b5"
-nb_url="https://netbox.int.lovedufva.se"
+token="NETBOX_TOKEN"
+nb_url="https://netbox.example.com"
 # Functions
 usage() {
 	echo "Usage: $0 [ -n NAME (e.g. vm1.example.com) ] [ -i INTERFACE (e.g. eth0) ] [ -c CPUs (e.g. 2) ] [ -C CLUSTER (e.g. proxmox) ] [ -m MEMORY (e.g. 4096) ] [ -a ADDRESS/NETMASK (e.g. 10.13.37.69/24) ]" 1>&2
