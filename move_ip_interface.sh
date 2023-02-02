@@ -33,31 +33,21 @@ while getopts ":a:d:i:" options; do
   esac
 done
 
+# Echo CSV base
+echo "$nb_url/ipam/ip-addresses/import/"
+echo "id,device,interface"
+
 # Get address id from netbox
+echo "$ADDR" | while read -d, addr || [[ -n $addr ]]; do
 addrIdJson=$(curl -s -H "Authorization: Token "$token"" \
 -H "Content-Type: application/json" \
 -H "Accept: application/json" \
 "$nb_url"/graphql/ \
---data '{"query": "query {ip_address_list(address:\"'$ADDR'\") {id}}"}' )
+--data '{"query": "query {ip_address_list(address:\"'$addr'\") {id}}"}' )
 
-# Set some variables for the API call
+# Sort out some stuff
 addrId=$(echo "$addrIdJson" | jq -r '.data.ip_address_list[].id' )
 unicodeFixed=$(echo $addrId | tr -d $'\u00a0')
 
-echo "$nb_url/ipam/ip-addresses/import/"
-echo "id,device,interface"
 echo "$unicodeFixed,$DEVICE,$INTERFACE"
-
-##### TODO make "jsonData" variable happen
-
-exit 0
-
-##### 
-
-# Update ip interface assignment in netbox
-
-#curl -X 'PATCH' -H "Authorization: Token "$token"" \
-#-H "Content-Type: application/json" \
-#-H "Accept: application/json" \
-#"$nb_url/api/ipam/ip-addresses/$unicodeFixed/" \
-#--data "$jsonData"
+done
